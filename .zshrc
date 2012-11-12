@@ -1,9 +1,23 @@
+### 環境設定
+export CC=gcc-4.2
+export LANG=ja_JP.UTF-8
+
+
+
 # Emacs style key binding
 bindkey -e
 
-# 補完
+# プロンプト設定
+PROMPT="%B%F{green}[${USER}@ %~] # %f%b"
+PROMPT2="%B%{[31m%}#%{[m%}%b "
+SPROMPT="%B%{[31m%}%r is correct? [n,y,a,e]:%{[m%}%b "
+
+### 補完
 autoload -U compinit
 compinit
+
+# 補完の時に大文字小文字を区別しない
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 #### ヒストリの設定
 HISTFILE=~/.zsh_history
@@ -19,12 +33,7 @@ setopt inc_append_history
 # スペースで始まるコマンド行はヒストリリストから削除
 setopt hist_verify
 
-
-export CC=gcc-4.2
-export LANG=ja_JP.UTF-8
-
-# 補完の時に大文字小文字を区別しない
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+### option
 
 # 先頭がスペースならヒストリーに追加しない
 setopt hist_ignore_space
@@ -38,6 +47,12 @@ setopt no_flow_control
 # rm * を実行する前に確認する
 setopt rmstar_wait
 
+# PCRE 互換の正規表現を使う
+setopt re_match_pcre
+
+# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
+setopt prompt_subst
+
 
 #### set alias
 
@@ -48,6 +63,15 @@ alias subl=" /Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl"
 
 alias la="ls -lhAF"
 
+# フォルダ、ファイルに色をつける
+case "${OSTYPE}" in
+freebsd*|darwin*)
+alias ls='ls -FGh'
+;;
+linux*)
+alias ls='ls --color=auto'
+;;
+esac
 
 # rbenvの設定
 eval "$(rbenv init -)"
@@ -77,15 +101,3 @@ function extract () {
   fi
 }
 alias ex='extract'
-
-
-# フォルダ、ファイルに色をつける
-case "${OSTYPE}" in
-freebsd*|darwin*)
-alias ls='ls -FGh'
-;;
-linux*)
-alias ls='ls --color=auto'
-;;
-esac
-
