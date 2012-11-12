@@ -7,10 +7,34 @@ export LANG=ja_JP.UTF-8
 # Emacs style key binding
 bindkey -e
 
-# プロンプト設定
-PROMPT="%B%F{green}[${USER}@ %~] # %f%b"
-PROMPT2="%B%{[31m%}#%{[m%}%b "
-SPROMPT="%B%{[31m%}%r is correct? [n,y,a,e]:%{[m%}%b "
+
+### プロンプト設定
+# color
+autoload colors
+colors	
+
+# PCRE 互換の正規表現を使う
+setopt re_match_pcre
+
+# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
+# 色の指定を%{$fg[red]%}みたいに人に優しい指定の仕方が出来、コピペもしやすい。リセットするときは%{$reset_color%}
+setopt prompt_subst
+
+# rootとその他で分けておく
+case ${UID} in
+	0)
+	PROMPT="%B%F{red}[%n@ %~] # %f%b"
+	PROMPT2="%B%{${fg[red]} >> %b"
+	SPROMPT="%B%{${fg[white]}%}Did you mean %{${fg[red]}%}%r%{${reset_color}%} ? [n,y,a,e]:%{${reset_color}%}%b "
+	RPROMPT="%{$fg_bold[white]%}[%{$reset_color%}%{$fg[cyan]%}%~%{$reset_color%}%{$fg_bold[white]%}]%{$reset_color%}"
+	;;
+	*)
+	PROMPT="%B%F{green}[%n@] # %f%b"
+	PROMPT2="%B%{${fg[yellow]} >> %b"
+	SPROMPT="%B%{${fg[white]}%}Did you mean %{${fg[red]}%}%r%{${reset_color}%} ? [n,y,a,e]:%{${reset_color}%}%b "
+	RPROMPT="%{$fg_bold[white]%}[%{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg_bold[white]%}]%{$reset_color%}"
+	;;
+esac
 
 ### 補完
 autoload -U compinit
@@ -47,11 +71,8 @@ setopt no_flow_control
 # rm * を実行する前に確認する
 setopt rmstar_wait
 
-# PCRE 互換の正規表現を使う
-setopt re_match_pcre
-
-# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
-setopt prompt_subst
+# 打ち間違い訂正
+setopt correct_all
 
 
 #### set alias
@@ -76,7 +97,9 @@ esac
 # rbenvの設定
 eval "$(rbenv init -)"
 
-### 解凍設定		
+### 関数
+
+# 解凍設定		
 function extract () {
  	if [ -f $1 ] ; then
       case $1 in
@@ -101,3 +124,5 @@ function extract () {
   fi
 }
 alias ex='extract'
+
+function chpwd() {ls}
