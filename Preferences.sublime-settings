@@ -1,0 +1,18 @@
+// Settings in here override those in "Default/Preferences.sublime-settings", and
+// are overridden in turn by file type specific settings.
+{
+	// フォントサイズ
+	"font_size": 13,
+	// 行間
+	"line_padding_top": 5,
+	// タブサイズ
+	"tab_size": 2,
+	// 空白の削除
+	"trim_trailing_white_space_on_save": true,
+	// タブやスペースなどの不可視文字を表示
+	"draw_white_space": all,
+	// 現在の選択行をハイライト表示
+	"highlight_line": true,
+	// 自動改行
+	"word_wrap": true
+}

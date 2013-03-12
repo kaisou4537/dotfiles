@@ -2,16 +2,13 @@
 export CC=gcc-4.2
 export LANG=ja_JP.UTF-8
 
-
-
 # Emacs style key binding
 bindkey -e
-
 
 ### プロンプト設定
 # color
 autoload colors
-colors	
+colors
 
 # PCRE 互換の正規表現を使う
 setopt re_match_pcre
@@ -74,14 +71,12 @@ setopt rmstar_wait
 # 打ち間違い訂正
 setopt correct_all
 
-
 #### set alias
-
 alias coteditor="open $1 -g -a CotEditor"
+alias dus="du -s * | sort -nr | head -10"
 
 # sublime text 2の設定
 alias subl=" /Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl"
-
 alias la="ls -lhAF"
 
 # フォルダ、ファイルに色をつける
@@ -99,7 +94,7 @@ eval "$(rbenv init -)"
 
 ### 関数
 
-# 解凍設定		
+# 解凍設定
 function extract () {
  	if [ -f $1 ] ; then
       case $1 in
@@ -125,4 +120,5 @@ function extract () {
 }
 alias ex='extract'
 
+# cdした時に行うアクション
 function chpwd() {ls}
